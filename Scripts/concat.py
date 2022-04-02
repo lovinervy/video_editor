@@ -1,4 +1,4 @@
-from tkinter import BOTTOM, CENTER, DISABLED, Entry, Label, Tk, Button, END
+from tkinter import BOTTOM, CENTER, DISABLED, Entry, Frame, Label, Tk, Button, END
 from tkinter import filedialog
 from tkinter.font import NORMAL
 
@@ -22,7 +22,7 @@ class Window(Tk):
 
 
         self.confirm_button = Button(self, text='Склеить', command=self.make)
-        self.confirm_button.pack(side=BOTTOM)
+        self.confirm_button.pack(side=BOTTOM, pady=5)
 
         self.video_name = Entry(self, width=20, justify=CENTER)
         self.video_name.pack(side=BOTTOM)
@@ -50,14 +50,18 @@ class Window(Tk):
         entry = Entry(self, width=30, justify=CENTER)
         self.all_entry[cur]['entry'] = entry
         entry.pack()
-
-        select_button = Button(self, text='Выбрать', command=lambda:self.onOpen(entry))
-        self.all_entry[cur]['select'] = select_button
-        select_button.pack()
-
         self.set_text(entry, "Выберите файл")
-        btn = Button(self, text='Удалить', command= lambda: self.delete_video(cur, btn))
-        btn.pack()
+
+        frame = Frame(self)
+        self.all_entry[cur]['frame'] = frame
+        frame.pack(pady=5)
+
+        select_button = Button(frame, text='Выбрать', command=lambda:self.onOpen(entry))
+        self.all_entry[cur]['select'] = select_button
+        select_button.grid(column=0, row=0, padx=5)
+
+        btn = Button(frame, text='Удалить', command= lambda: self.delete_video(cur, btn))
+        btn.grid(column=1, row=0)
         self.add_button = Button(self, text='Добавить', command=self.add_video)
         self.add_button.pack()
         self.cur_entry += 1
@@ -65,8 +69,9 @@ class Window(Tk):
     def delete_video(self, cur, btn):
         self.all_entry[cur]['entry'].pack_forget()
         self.all_entry[cur]['select'].pack_forget()
+        self.all_entry[cur]['frame'].pack_forget()
         self.all_entry.pop(cur)
-        btn.pack_forget()        
+        btn.pack_forget()
 
     def set_text(self, entry, filename: str):
         entry.configure(state=NORMAL)
