@@ -90,7 +90,7 @@ class Window(Tk):
     def make(self):
         self.result()
         cmd = [
-            'ffmpeg',
+            'Program/ffmpeg',
             '-f', 'concat',
             '-safe', '0',
             '-i', 'files.txt',
