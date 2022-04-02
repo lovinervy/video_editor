@@ -1,7 +1,6 @@
 from tkinter import Tk, Frame
 from tkinter import Entry, Label, Button
-from tkinter import CENTER, END
-from tkinter.font import NORMAL
+from tkinter import CENTER
 
 from datetime import timedelta
 import subprocess
@@ -99,7 +98,7 @@ class Core:
             
             name = f'{self.OUTPUT}/{name}_r.webm'
             cmd = [
-                'ffmpeg',
+                'Program/ffmpeg',
                 '-f', 'concat',
                 '-safe', '0',
                 '-i', 'concat.txt',
@@ -128,7 +127,7 @@ class Core:
 
     def merge(self, video: str, audio: str, name):
         cmd = [
-            'ffmpeg',
+            'Program/ffmpeg',
             '-i', video,
             '-i', audio,
             '-codec', 'copy',
@@ -156,9 +155,10 @@ class Window(Tk):
         self.frame_select = Frame(self)
         self.frame_select.grid(column=0, row=0, pady=5)
 
+        Label(self.frame_select, text='Ссылка на видео:').grid(column=0, row=0)
         self.entry = Entry(self.frame_select, width=35, justify=CENTER)
-        self.entry.grid(column=0, row=0, ipadx=5, padx=5, pady=5)
-        self.set_text('Ссылка на видео')
+        self.entry.grid(column=0, row=1, ipadx=5, padx=5, pady=5)
+        # self.set_text('Ссылка на видео')
 
         self.frame_timing = Frame(self)
         self.frame_timing.grid(column=0, row=2, pady=5)
@@ -179,12 +179,6 @@ class Window(Tk):
 
         self.confirm_button = Button(self, text='Вырезать', command=self.make)
         self.confirm_button.grid(column=0, row=5, pady=5)
-    
-    def set_text(self, filename: str):
-        self.entry.configure(state=NORMAL)
-        self.entry.delete(0, END)
-        self.entry.insert(0, filename)
-    
 
     def make(self):
         links = self.core.get_link(self.entry.get())
@@ -195,7 +189,9 @@ class Window(Tk):
         
         name = self.video_name.get()
         video = self.core.download_video(links[0], name)
+        print(video)
         audio = self.core.download_audio(links[1], name)
+        print(audio)
         self.core.merge(video, audio, name)
 
 
