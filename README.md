@@ -1,5 +1,5 @@
 # Video Editor
-## Пример работы: [YouTube]()
+## Пример работы: [YouTube](https://youtu.be/6GmllC1heTE)
 &nbsp;
 
 ## Усатновка
