@@ -2,7 +2,7 @@
 ## Пример работы: [YouTube](https://youtu.be/6GmllC1heTE)
 &nbsp;
 
-## Усатновка
+## Установка
 &nbsp;
 ### Windows
 
@@ -13,7 +13,7 @@
     * Скачать zip архив
     * Расспаковать архив в удобном для вас месте
 
-3. Скачать архив [ffmpeg-git-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) и извлечь от туда ffmpeg.exe из директории ```bin``` и положить в папку ```Program``` в директории ```video_editor```
+3. Скачать архив [ffmpeg-git-full.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) и извлечь от туда ffmpeg.exe и ffprobe.exe из директории ```bin``` и положить в корень директории ```video_editor```
 
 4. Запустить командную строку внутри ```video_editor``` 
 5. Пишем следующие команды в командную строку
@@ -38,9 +38,36 @@ pip install yt-dlp
 Запуск скриптов
 * Ножницы
 ```
-python .\Scripts\scissors.py
+python scissors.py
 ``` 
 * Склейка роликов (У всех видео должен быть одна и та же кодировка)
 ```
-python .\Scripts\concat.py
+python concat.py
+```
+
+### Linux / Ubuntu
+1. Установить Python
+```bash
+sudo apt install python3 
+```
+2. Установить Git
+```bash
+sudo apt install git 
+```
+3. Скачать репозиторию
+```bash
+git clone https://github.com/lovinervy/video_editor.git
+```
+4. Настройка скрипта
+```bash
+cd video_editor/
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip
+pip install yt-dlp
+```
+5. Запуск скрипта
+```bash
+source .venv/bin/activate
+python scissors.py
 ```

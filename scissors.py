@@ -9,12 +9,21 @@ import os
 
 
 class Ff:
+    """The class responsible for work with library ffmpeg and ffprobe"""
     @classmethod
     def __run(self, cmd: List[str]):
         subprocess.call(cmd, stderr=subprocess.STDOUT)
 
     @classmethod
     def get_video_duration(self, fp: str) -> float:
+        """Func to get info about video duration
+
+        Args:
+            fp (str): path to file. Example: "path/to/file/example.mp4"
+
+        Returns:
+            float: video duration in seconds
+        """
         result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
                                 "format=duration", "-of",
                                  "default=noprint_wrappers=1:nokey=1", fp],
@@ -24,6 +33,15 @@ class Ff:
 
     @classmethod
     def download(self, url: str, fp: str, start: float = None, stop: float = None, codec_copy: bool = True):
+        """Func to get video or audio from URL link by using ffmpeg library
+
+        Args:
+            url (str): URL link to content.
+            fp (str): Path to file where it will be saved. Example: "path/to/file/example.mp4".
+            start (float, optional): Gets in secconds. Starting position from where will be start saving content. Defaults to None.
+            stop (float, optional): Gets in secconds. Ending position from where will be stop saving content. Defaults to None.
+            codec_copy (bool, optional): Keep current encoding. If codec_copy false then it will encode to the most common encoding. Defaults to True.
+        """
         cmd = ['ffmpeg', '-y']
         if start:
             cmd += ['-ss', str(start)]
@@ -37,6 +55,12 @@ class Ff:
 
     @classmethod
     def merge(self, fp: str, *args):
+        """Simplest merging of video and audio
+
+        Args:
+            fp (str): Path to file where it will be saved new file.
+            *args (str): Path to files to merge.
+        """
         cmd = ['ffmpeg', '-y']
         for file in args:
             cmd += ['-i', file]
@@ -46,6 +70,7 @@ class Ff:
 
 
 class Core(Ff):
+    """Child class Ff. Responsible for downloading files from YouTube"""
     OUTPUT = 'output'
 
     def __init__(self) -> None:
@@ -53,6 +78,14 @@ class Core(Ff):
             os.makedirs(self.OUTPUT)
 
     def get_youtube_links(self, url: str) -> List[str]:
+        """Func to get source URL link to video and audio
+
+        Args:
+            url (str): link to video on YouTube
+
+        Returns:
+            List[str]: List[0] is video, List[1] is audio
+        """
         proc = subprocess.Popen(['yt-dlp', '-f',
                                  "(bestvideo+bestaudio/best)[protocol!*=dash]",
                                  '-g', url],
@@ -73,8 +106,18 @@ class Core(Ff):
         return name
 
 
-def fix_start(fp: str, stop: float) -> float:
-    duration = Ff.get_video_duration(fp)
+def fix_start(video: str, stop: float) -> float:
+    """Video downloaded from Core.download_video haven't strict border.
+    This func fix length to audio track
+
+    Args:
+        video (str): Path to file
+        stop (float): Gets in secconds. Ending position from where will be stop saving content.
+
+    Returns:
+        float: New start position from where will be start saving content.
+    """
+    duration = Ff.get_video_duration(video)
     return stop - duration
 
 
