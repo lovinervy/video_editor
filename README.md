@@ -54,11 +54,15 @@ sudo apt install python3
 ```bash
 sudo apt install git 
 ```
-3. Скачать репозиторию
+3. Установить ffmpeg
+```bash
+sudo apt install ffmpeg
+```
+4. Скачать репозиторию
 ```bash
 git clone https://github.com/lovinervy/video_editor.git
 ```
-4. Настройка скрипта
+5. Настройка скрипта
 ```bash
 cd video_editor/
 python3 -m venv .venv
@@ -66,7 +70,7 @@ source .venv/bin/activate
 pip install -U pip
 pip install yt-dlp
 ```
-5. Запуск скрипта
+6. Запуск скрипта
 ```bash
 source .venv/bin/activate
 python scissors.py
