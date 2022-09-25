@@ -36,10 +36,10 @@ class Ff:
         """Func to get video or audio from URL link by using ffmpeg library
 
         Args:
-            url (str): URL link to content.
-            fp (str): Path to file where it will be saved. Example: "path/to/file/example.mp4".
-            start (float, optional): Gets in secconds. Starting position from where will be start saving content. Defaults to None.
-            stop (float, optional): Gets in secconds. Ending position from where will be stop saving content. Defaults to None.
+            url (str): URL link to content.\n
+            fp (str): Path to file where it will be saved. Example: "path/to/file/example.mp4".\n
+            start (float, optional): Gets in secconds. Starting position from where will be start saving content. Defaults to None.\n
+            stop (float, optional): Gets in secconds. Ending position from where will be stop saving content. Defaults to None.\n
             codec_copy (bool, optional): Keep current encoding. If codec_copy false then it will encode to the most common encoding. Defaults to True.
         """
         cmd = ['ffmpeg', '-y']
@@ -84,7 +84,7 @@ class Core(Ff):
             url (str): link to video on YouTube
 
         Returns:
-            List[str]: List[0] is video, List[1] is audio
+            List[str]: List[0] is link to video, List[1] is link to audio
         """
         proc = subprocess.Popen(['yt-dlp', '-f',
                                  "(bestvideo+bestaudio/best)[protocol!*=dash]",
@@ -158,9 +158,10 @@ class Window(Tk):
 
         Tk.__init__(self)
         self.title("Scissors")
-        self.geometry('236x200')
-        self.resizable()
         self.setUI()
+        self.entry.update_idletasks()
+        self.geometry(f'{self.entry.winfo_width() + 10}x190')
+        self.resizable(False, False)
 
         self.content = {}
 
@@ -171,6 +172,7 @@ class Window(Tk):
         Label(self.frame_select, text='Ссылка на видео:').grid(column=0, row=0)
         self.entry = Entry(self.frame_select, width=35, justify=CENTER)
         self.entry.grid(column=0, row=1, ipadx=5, padx=5, pady=5)
+        print(self.entry.winfo_width())
         # self.set_text('Ссылка на видео')
 
         self.frame_timing = Frame(self)
